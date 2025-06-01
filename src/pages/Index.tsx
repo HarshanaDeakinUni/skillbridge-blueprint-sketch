@@ -1,12 +1,46 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useState } from "react";
+import Navigation from "@/components/Navigation";
+import LandingPage from "@/components/LandingPage";
+import StudentDashboard from "@/components/StudentDashboard";
+import TaskDetailsPage from "@/components/TaskDetailsPage";
+import SubmissionPage from "@/components/SubmissionPage";
+import BadgeShowcase from "@/components/BadgeShowcase";
 
 const Index = () => {
+  const [currentPage, setCurrentPage] = useState('landing');
+  const [selectedTaskId, setSelectedTaskId] = useState<string>('');
+
+  const handleNavigate = (page: string, taskId?: string) => {
+    setCurrentPage(page);
+    if (taskId) {
+      setSelectedTaskId(taskId);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-white">
+      <Navigation currentPage={currentPage} onNavigate={handleNavigate} />
+      
+      {currentPage === 'landing' && (
+        <LandingPage onNavigate={handleNavigate} />
+      )}
+      
+      {currentPage === 'dashboard' && (
+        <StudentDashboard onNavigate={handleNavigate} />
+      )}
+      
+      {currentPage === 'task-details' && (
+        <TaskDetailsPage taskId={selectedTaskId} onNavigate={handleNavigate} />
+      )}
+      
+      {currentPage === 'submission' && (
+        <SubmissionPage onNavigate={handleNavigate} />
+      )}
+      
+      {currentPage === 'badges' && (
+        <BadgeShowcase onNavigate={handleNavigate} />
+      )}
     </div>
   );
 };
